@@ -1,0 +1,21 @@
+#valoresIniciales{
+  width: 400px;
+  height: 300px;
+}
+
+.main{
+  float:left;
+}
+
+.tabla{
+  float:right;
+  margin-right: 300px;
+}
+
+.MTC{
+  float:left;
+}
+
+.MD{
+  float: right;
+}
