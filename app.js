@@ -299,10 +299,11 @@ btnCalcular.addEventListener("click", () => {
 
     }
     if(arregloNumeros.length < 30)
-      console.log("Disponga de una muestra grande si quiere continuar");
+      tabla.innerHTML = "<h2> Disponga de una muestra mas grande </h2>";
   }
   if(!estado)
-    console.log("No todos son numeros");
+    tabla.innerHTML = "<h2> Solo se aceptan numeros </h2>";
+
 });
 
 //
