@@ -3,32 +3,19 @@ const btnCalcular =  document.getElementById("calcular");
 const tabla = document.querySelector(".tabla");
 const numeros = document.querySelector(".numeros");
 
-const validarValores = (valoresIniciales) => {
-  let estado = 0;
-  for(let i=0; i<valoresIniciales.length; i++){
-    if(valoresIniciales[i].codePointAt() >= 48 && valoresIniciales[i].codePointAt() < 58  || valoresIniciales[i].codePointAt() === 32 ){
-      estado = 1;
-    }
-    else{
-      estado = 0;
-    }
-  }
-  return estado;
-};
-
 const convertirANumeros = (valoresIniciales) => {
-  let arreglo = [];
-  let numeroTemporal = "";
-  valoresIniciales += " "; //Esto es para que se pueda agregar el ultimo dato
-  for(let i=0; i<valoresIniciales.length; i++){
-    if(valoresIniciales[i].codePointAt() >= 48 && valoresIniciales[i].codePointAt() < 58  || valoresIniciales[i].codePointAt() === 46 )
-      numeroTemporal += valoresIniciales[i];
-    if(valoresIniciales[i].codePointAt() === 32 || valoresIniciales[i].codePointAt() === 10){
-      arreglo.push(Number(numeroTemporal));
-      numeroTemporal = "";
-    }
-  }
-    return arreglo;
+  let estado = valoresIniciales.match(/[-/+]?\d+(?:\.\d+)?/g);
+  // let numeroTemporal = "";
+  // valoresIniciales += " "; //Esto es para que se pueda agregar el ultimo dato
+  // for(let i=0; i<valoresIniciales.length; i++){
+  //   if(valoresIniciales[i].codePointAt() >= 48 && valoresIniciales[i].codePointAt() < 58  || valoresIniciales[i].codePointAt() === 46 )
+  //     numeroTemporal += valoresIniciales[i];
+  //   if(valoresIniciales[i].codePointAt() === 32 || valoresIniciales[i].codePointAt() === 10){
+  //     arreglo.push(Number(numeroTemporal));
+  //     numeroTemporal = "";
+  //   }
+  // }
+    return estado;
 };
 
 const distribucionFrecuencias = (arregloNumeros) => {
@@ -36,13 +23,12 @@ const distribucionFrecuencias = (arregloNumeros) => {
   const intervalo = Math.round(Math.sqrt(n));
   const maximo = Math.max(...arregloNumeros);
   const minimo = Math.min(...arregloNumeros);
-  const amplitud = Math.round((maximo - minimo) / intervalo);
-  console.log("Maximo " + maximo, "Minimo " + minimo);
+  const amplitud = ((maximo - minimo) / intervalo).toFixed(2) ;
   return {
     maximo : maximo,
     minimo : minimo,
     intervalo: intervalo,
-    amplitud:  amplitud
+    amplitud:  parseFloat(amplitud)
   }
 };
 
@@ -107,7 +93,7 @@ const calcularFrecuenciasRelativas = (frecuencias, n) => {
 
   for(let i=0; i<frecuencias.length; i++){
     fa = (frecuencias[i] / n) * 100;
-    arreglo.push(parseFloat(fa.toFixed(2)));
+    arreglo.push(fa);
   }
 
   return arreglo;
@@ -190,7 +176,7 @@ const calcularfrecuenciaPorMarcaDeClaseMenosMediaAlCuadrado = (frecuencias, marc
 
   frecuencias.forEach((item, i) => {
     let temp = frecuencias[i] *  Math.pow( (marcaDeClase[i] - media), 2);
-    arreglo.push(parseFloat(temp.toFixed(2)));
+    arreglo.push(temp);
   });
 
   return arreglo;
@@ -249,14 +235,14 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     limites.forEach((item, i) => {
       html += `
         <tr>
-            <th> ${limites[i].limiteInferior}  -< ${limites[i].limiteSuperior} </th>
-            <th> ${frecuencias[i]} </th>
-            <th> ${frecuenciasAcumuludas[i]} </th>
-            <th> ${frecuenciasRelativas[i]} </th>
-            <th> ${frecuenciasRelativasAcumuludas[i]} </th>
-            <th> ${marcaDeClase[i]} </th>
-            <th> ${frecuenciaPorMarcaDeClase[i]} </th>
-            <th> ${frecuenciaPorMarcaDeClaseMenosMediaAlCuadrado[i]} </th>
+            <th> ${limites[i].limiteInferior.toFixed(2)}  -< ${limites[i].limiteSuperior.toFixed(2)} </th>
+            <th> ${frecuencias[i].toFixed(2)} </th>
+            <th> ${frecuenciasAcumuludas[i].toFixed(2)} </th>
+            <th> ${frecuenciasRelativas[i].toFixed(2)} </th>
+            <th> ${frecuenciasRelativasAcumuludas[i].toFixed(2)} </th>
+            <th> ${marcaDeClase[i].toFixed(2)} </th>
+            <th> ${frecuenciaPorMarcaDeClase[i].toFixed(2)} </th>
+            <th> ${frecuenciaPorMarcaDeClaseMenosMediaAlCuadrado[i].toFixed(2)} </th>
         </tr>
       `
     });
@@ -272,16 +258,16 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
       </div>
 
       <div class="MD">
-        <h3> Varianza: ${parseFloat(varianza.toFixed(2))} </h3>
-        <h3> Variacion estandar ${parseFloat(variacionEstandar.toFixed(2))}</h3>
-        <h3> Coeficiente de variacion ${parseFloat(coeficienteDeVariacion.toFixed(2))}</h3>
+        <h3> Varianza: ${varianza.toFixed(2)} </h3>
+        <h3> Variacion estandar ${variacionEstandar.toFixed(2)}</h3>
+        <h3> Coeficiente de variacion ${coeficienteDeVariacion.toFixed(2)}</h3>
       </div>
     </div>
     `
 
     tabla.innerHTML = html;
 
-    numerosOrdenados = arregloNumeros.sort();
+    numerosOrdenados = arregloNumeros.sort(function(a, b){return a - b});
 
     html = "";
     html += "<h2> Numeros ordenados </h2>";
@@ -301,22 +287,28 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
 
 btnCalcular.addEventListener("click", () => {
   const valoresIniciales = valores.value;
-  const estado = validarValores(valoresIniciales);
+  const estado = valoresIniciales.match(/[-/+]?\d+(?:\.\d+)?/g);
+  const arregloNumeros = estado.map(i=>Number(i))
 
-  if(estado){
-    console.log("Todos son numeros");
-    const arregloNumeros = convertirANumeros(valoresIniciales);
+  if(estado.length != null){
     if(arregloNumeros.length >= 30){
       const {maximo, minimo, intervalo, amplitud} = distribucionFrecuencias(arregloNumeros);
-      calculosTablaFrecuencias(arregloNumeros.length, intervalo, amplitud, maximo, minimo, arregloNumeros)
-
+      console.log("Maximo " + maximo, "Minimo " + minimo, "Intervalo " + intervalo, "Amplitud " + amplitud);
+      calculosTablaFrecuencias(arregloNumeros.length, intervalo, amplitud, maximo, minimo, arregloNumeros);
     }
-    if(arregloNumeros.length < 30)
-      tabla.innerHTML = "<h2> Disponga de una muestra mas grande </h2>";
-      numeros.innerHTML = "";
+  if(estado.length < 30){
+    tabla.innerHTML = "";
+    numeros.innerHTML = "";
+    valores.value = null;
+    alert("Favor de cumplir con los requerimientos");
+    }
   }
-  if(!estado)
-    tabla.innerHTML = "<h2> Solo se aceptan numeros </h2>";
+  if(estado.length === null){
+    tabla.innerHTML = "";
+    numeros.innerHTML = "";
+    valores.value = null;
+    alert("Solo se aceptan numeros");
+  }
 
 });
 
