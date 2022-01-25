@@ -313,6 +313,7 @@ btnCalcular.addEventListener("click", () => {
     }
     if(arregloNumeros.length < 30)
       tabla.innerHTML = "<h2> Disponga de una muestra mas grande </h2>";
+      numeros.innerHTML = "";
   }
   if(!estado)
     tabla.innerHTML = "<h2> Solo se aceptan numeros </h2>";
