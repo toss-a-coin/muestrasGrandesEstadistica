@@ -314,12 +314,6 @@ btnCalcular.addEventListener("click", () => {
     alert("Favor de cumplir con los requerimientos");
     }
   }
-  if(estado.length === null){
-    tabla.innerHTML = "";
-    numeros.innerHTML = "";
-    valores.value = null;
-    alert("Solo se aceptan numeros");
-  }
 });
 
 //
