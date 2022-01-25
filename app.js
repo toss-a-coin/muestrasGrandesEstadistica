@@ -258,14 +258,17 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     html += "</table>";
 
     html += `
+    <h3> Amplitud = ${amplitud} <br> Intervalos:  ${arregloNumeros.length}</h3>
     <div class="contenedor">
       <div class="MTC">
+        <h2> Medidas de tendencia central </h2>
         <h3> Media: ${media.toFixed(2)} </h3>
         <h3> Mediana: ${mediana.toFixed(2)} </h3>
         <h3> Moda: ${moda.toFixed(2)} </h3>
       </div>
 
       <div class="MD">
+        <h2> Medidas de dispersion </h2>
         <h3> Varianza: ${varianza.toFixed(2)} </h3>
         <h3> Variacion estandar ${variacionEstandar.toFixed(2)}</h3>
         <h3> Coeficiente de variacion ${coeficienteDeVariacion.toFixed(2)}</h3>
