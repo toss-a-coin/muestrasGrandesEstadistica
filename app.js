@@ -163,20 +163,30 @@ const calcularMediana = (n, limites, frecuencias, frecuenciasAcumuludas, amplitu
 }
 
 const calcularModa = (limites, frecuencias, frecuenciasAcumuludas, amplitud) => {
-  let indice = 0;
-  let moda = 0;
+  let indices = [], modas = [], maximo = 0;
 
   frecuencias.forEach((item, i) => {
-      if(item > frecuencias[indice])
-        indice = i;
+      if(item > maximo)
+        maximo = item;
   });
 
-  if(indice > 0)
-     moda = limites[indice].limiteInferior + amplitud * ((frecuencias[indice] - frecuencias[indice-1]) / ((frecuencias[indice] - frecuencias[indice - 1]) + (frecuencias[indice] - frecuencias[indice + 1])));
-  if(!indice)
-     moda = limites[indice].limiteInferior + amplitud * ((frecuencias[indice]) / ((frecuencias[indice]) + (frecuencias[indice] - frecuencias[indice + 1])));
+  console.log("Maximo: " + maximo);
+  frecuencias.forEach((item, i) => {
+      if(item == maximo)
+        indices.push(i);
+  });
 
-  return moda;
+  console.log(indices);
+
+  indices.forEach((item, i) => {
+    if(item > 0)
+       modas.push(limites[item].limiteInferior + amplitud * ((frecuencias[item] - frecuencias[item-1]) / ((frecuencias[item] - frecuencias[item - 1]) + (frecuencias[item] - frecuencias[item + 1]))));
+    if(item === 0)
+       modas.push(limites[item].limiteInferior + amplitud * ((frecuencias[item]) / ((frecuencias[item]) + (frecuencias[item] - frecuencias[item + 1]))));
+  });
+
+  console.log(modas);
+  return modas;
 }
 
 const calcularfrecuenciaPorMarcaDeClaseMenosMediaAlCuadrado = (frecuencias, marcaDeClase, media) =>{
@@ -220,7 +230,7 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     let frecuenciaPorMarcaDeClase = [] = calcularFrecuenciaPorMarcaDeClase(frecuencias, marcaDeClase);
     let media = calcularMedia(frecuenciaPorMarcaDeClase, n);
     let mediana = calcularMediana(n, limites, frecuencias, frecuenciasAcumuludas, amplitud );
-    let moda = calcularModa(limites, frecuencias, frecuenciasAcumuludas, amplitud );
+    let moda = [] = calcularModa(limites, frecuencias, frecuenciasAcumuludas, amplitud );
     let frecuenciaPorMarcaDeClaseMenosMediaAlCuadrado = [] = calcularfrecuenciaPorMarcaDeClaseMenosMediaAlCuadrado(frecuencias, marcaDeClase, media);
     let varianza = calcularVarianza(frecuenciaPorMarcaDeClaseMenosMediaAlCuadrado, n);
     let variacionEstandar = calcularVariacionEstandar(varianza);
@@ -264,9 +274,15 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
         <h2> Medidas de tendencia central </h2>
         <h3> Media: ${media.toFixed(2)} </h3>
         <h3> Mediana: ${mediana.toFixed(2)} </h3>
-        <h3> Moda: ${moda.toFixed(2)} </h3>
-      </div>
+    `;
 
+  moda.forEach((item, i) => {
+    html += `<h3>Moda ${i + 1}: ${item.toFixed(2)} </h3>`;
+  });
+
+
+    html += `
+      </div>
       <div class="MD">
         <h2> Medidas de dispersion </h2>
         <h3> Varianza: ${varianza.toFixed(2)} </h3>
@@ -274,7 +290,7 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
         <h3> Coeficiente de variacion ${coeficienteDeVariacion.toFixed(2)}</h3>
       </div>
     </div>
-    `
+    `;
 
     tabla.innerHTML = html;
 
