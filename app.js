@@ -1,6 +1,7 @@
 const valores = document.getElementById("valoresIniciales");
 const btnCalcular =  document.getElementById("calcular");
 const tabla = document.querySelector(".tabla");
+const numeros = document.querySelector(".numeros");
 
 const validarValores = (valoresIniciales) => {
   let estado = 0;
@@ -232,7 +233,7 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     let coeficienteDeVariacion = calcularCoeficienteDeVariacion(variacionEstandar, media);
 
     let html = "";
-    html += "<h1> Tabla de frecuencias </h1>";
+    html += "<h2> Tabla de frecuencias </h2>";
     html += "<table border = 1>";
       html += "<tr>";
         html += "<th> Limite inferior - Limite superior </th>";
@@ -263,22 +264,37 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     html += "</table>";
 
     html += `
-    <div class="MTC">
-      <h3> Media: ${media.toFixed(2)} </h3>
-      <h3> Mediana: ${mediana.toFixed(2)} </h3>
-      <h3> Moda: ${moda.toFixed(2)} </h3>
-    </div>
-    `
+    <div class="contenedor">
+      <div class="MTC">
+        <h3> Media: ${media.toFixed(2)} </h3>
+        <h3> Mediana: ${mediana.toFixed(2)} </h3>
+        <h3> Moda: ${moda.toFixed(2)} </h3>
+      </div>
 
-    html += `
-    <div class="MD">
-      <h3> Varianza: ${parseFloat(varianza.toFixed(2))} </h3>
-      <h3> Variacion estandar ${parseFloat(variacionEstandar.toFixed(2))}</h3>
-      <h3> Coeficiente de variacion ${parseFloat(coeficienteDeVariacion.toFixed(2))}</h3>
+      <div class="MD">
+        <h3> Varianza: ${parseFloat(varianza.toFixed(2))} </h3>
+        <h3> Variacion estandar ${parseFloat(variacionEstandar.toFixed(2))}</h3>
+        <h3> Coeficiente de variacion ${parseFloat(coeficienteDeVariacion.toFixed(2))}</h3>
+      </div>
     </div>
     `
 
     tabla.innerHTML = html;
+
+    numerosOrdenados = arregloNumeros.sort();
+
+    html = "";
+    html += "<h2> Numeros ordenados </h2>";
+    html += "<table border=1>"
+    html += "<tr>"
+    numerosOrdenados.forEach((item, i) => {
+      if(i % 10 != 0)
+        html += `<th> ${item} </th>`;
+      if(i % 10 === 0)
+        html += `</th> <tr> <th> ${item} </th>`;
+    });
+    html += "</table>"
+    numeros.innerHTML = html;
 
     // console.log(limites, frecuencias, frecuenciasAcumuludas, frecuenciasRelativas, frecuenciasRelativasAcumuludas, marcaDeClase, frecuenciaPorMarcaDeClase, media, mediana, moda);
 }
@@ -291,10 +307,7 @@ btnCalcular.addEventListener("click", () => {
     console.log("Todos son numeros");
     const arregloNumeros = convertirANumeros(valoresIniciales);
     if(arregloNumeros.length >= 30){
-      console.log(arregloNumeros);
       const {maximo, minimo, intervalo, amplitud} = distribucionFrecuencias(arregloNumeros);
-      console.log("Intervalo " + intervalo);
-      console.log("Amplitud " + amplitud);
       calculosTablaFrecuencias(arregloNumeros.length, intervalo, amplitud, maximo, minimo, arregloNumeros)
 
     }
