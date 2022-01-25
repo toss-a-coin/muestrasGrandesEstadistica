@@ -170,13 +170,10 @@ const calcularModa = (limites, frecuencias, frecuenciasAcumuludas, amplitud) => 
         maximo = item;
   });
 
-  console.log("Maximo: " + maximo);
   frecuencias.forEach((item, i) => {
       if(item == maximo)
         indices.push(i);
   });
-
-  console.log(indices);
 
   indices.forEach((item, i) => {
     if(item > 0)
@@ -185,7 +182,6 @@ const calcularModa = (limites, frecuencias, frecuenciasAcumuludas, amplitud) => 
        modas.push(limites[item].limiteInferior + amplitud * ((frecuencias[item]) / ((frecuencias[item]) + (frecuencias[item] - frecuencias[item + 1]))));
   });
 
-  console.log(modas);
   return modas;
 }
 
@@ -320,7 +316,7 @@ btnCalcular.addEventListener("click", () => {
   if(estado.length != null){
     if(arregloNumeros.length >= 30){
       const {maximo, minimo, intervalo, amplitud} = distribucionFrecuencias(arregloNumeros);
-      console.log("Maximo " + maximo, "Minimo " + minimo, "Intervalo " + intervalo, "Amplitud " + amplitud);
+      // console.log("Maximo " + maximo, "Minimo " + minimo, "Intervalo " + intervalo, "Amplitud " + amplitud);
       calculosTablaFrecuencias(arregloNumeros.length, intervalo, amplitud, maximo, minimo, arregloNumeros);
     }
   if(estado.length < 30){
