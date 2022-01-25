@@ -30,12 +30,13 @@ const distribucionFrecuencias = (arregloNumeros) => {
   const maximo = Math.max(...arregloNumeros);
   const minimo = Math.min(...arregloNumeros);
   const decimales = arregloNumeros[0].countDecimals();
-  const amplitud = !decimales ? Math.round(((maximo - minimo) / intervalo)):((maximo - minimo) / intervalo).toFixed(decimales);
+  let redondeoDecimal = Math.pow(10, -decimales);
+  const amplitud = !decimales ? Math.round(((maximo - minimo) / intervalo)): parseFloat(((maximo - minimo) / intervalo).toFixed(decimales)) + redondeoDecimal;
   return {
     maximo : maximo,
     minimo : minimo,
     intervalo: intervalo,
-    amplitud:  parseFloat(amplitud)
+    amplitud:  amplitud
   }
 };
 
@@ -74,7 +75,7 @@ const calcularFrecuencias = (arregloNumeros, limites) => {
   let coincidencias = 0;
     for(let i=0; i<limites.length; i++){
       for(let j=0; j<arregloNumeros.length; j++){
-        if(arregloNumeros[j] >= limites[i].limiteInferior && arregloNumeros[j] < limites[i].limiteSuperior)
+        if(arregloNumeros[j] >= parseFloat(limites[i].limiteInferior.toFixed(2)) && arregloNumeros[j] < parseFloat(limites[i].limiteSuperior.toFixed(2)))
           coincidencias++;
       }
       arreglo.push(coincidencias);
@@ -316,7 +317,6 @@ btnCalcular.addEventListener("click", () => {
     valores.value = null;
     alert("Solo se aceptan numeros");
   }
-
 });
 
 //
