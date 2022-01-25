@@ -3,6 +3,12 @@ const btnCalcular =  document.getElementById("calcular");
 const tabla = document.querySelector(".tabla");
 const numeros = document.querySelector(".numeros");
 
+Number.prototype.countDecimals = function () {
+    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
+    return this.toString().split(".")[1].length || 0;
+}
+
+
 const convertirANumeros = (valoresIniciales) => {
   let estado = valoresIniciales.match(/[-/+]?\d+(?:\.\d+)?/g);
   // let numeroTemporal = "";
@@ -23,7 +29,8 @@ const distribucionFrecuencias = (arregloNumeros) => {
   const intervalo = Math.round(Math.sqrt(n));
   const maximo = Math.max(...arregloNumeros);
   const minimo = Math.min(...arregloNumeros);
-  const amplitud = ((maximo - minimo) / intervalo).toFixed(2) ;
+  const decimales = arregloNumeros[0].countDecimals();
+  const amplitud = !decimales ? Math.round(((maximo - minimo) / intervalo)):((maximo - minimo) / intervalo).toFixed(decimales);
   return {
     maximo : maximo,
     minimo : minimo,
