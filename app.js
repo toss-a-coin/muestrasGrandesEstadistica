@@ -276,9 +276,10 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     html += `<h3>Moda ${i + 1}: ${item} </h3>`;
   });
 
+  html += "</div>";
+
 
     html += `
-      </div>
       <div class="MD">
         <h2> Medidas de dispersion </h2>
         <h3> Varianza: ${varianza} </h3>
@@ -286,7 +287,6 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
         <h3> Coeficiente de variacion ${coeficienteDeVariacion}%</h3>
       </div>
     </div>
-  </table>
     `;
 
     tabla.innerHTML = html;
@@ -331,9 +331,7 @@ const calcularMedianaMenor30 = (n, arregloNumeros) => {
 
   if(indice % 2 != 0){
     let temp = Math.trunc(indice);
-    console.log(temp, typeof(temp));
     mediana = (arregloNumeros[temp - 1] + arregloNumeros[temp]) / 2;
-    console.log(mediana);
   }
 
   return mediana;
@@ -380,9 +378,9 @@ const calculosTablaFrecuenciasMenores30 = (n, arregloNumeros) => {
     const varianza = calcularVarianzaMenor30(n, numerosOrdenados, media);
     const desviacionEstandar = calcularDesviacionEstandarMenor30(varianza);
     const coeficienteDeVariacion = calcularCoeficienteDeVariacionMenor30(desviacionEstandar, media);
+    tabla.innerHTML = "";
+    numeros.innerHTML = "";
     let html = "";
-
-    html += "</table>";
 
     html += `
     <div class="contenedor">
@@ -397,7 +395,7 @@ const calculosTablaFrecuenciasMenores30 = (n, arregloNumeros) => {
 
   if(moda.length > 0){
     moda.forEach((item, i) => {
-      html += `<h3>Moda ${i + 1}: ${item} </h3>`;
+      html += `<h3> Moda ${i + 1}: ${item} </h3>`;
     });
   }
     html += `
@@ -409,7 +407,6 @@ const calculosTablaFrecuenciasMenores30 = (n, arregloNumeros) => {
         <h3> Coeficiente de variacion ${coeficienteDeVariacion}%</h3>
       </div>
     </div>
-  </table>
     `;
   tabla.innerHTML = html;
 
