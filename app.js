@@ -268,12 +268,12 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     <div class="contenedor">
       <div class="MTC">
         <h2> Medidas de tendencia central </h2>
-        <h3> Media: ${media.toFixed(2)} </h3>
-        <h3> Mediana: ${mediana.toFixed(2)} </h3>
+        <h3> Media: ${media} </h3>
+        <h3> Mediana: ${mediana} </h3>
     `;
 
   moda.forEach((item, i) => {
-    html += `<h3>Moda ${i + 1}: ${item.toFixed(2)} </h3>`;
+    html += `<h3>Moda ${i + 1}: ${item} </h3>`;
   });
 
 
@@ -283,9 +283,10 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
         <h2> Medidas de dispersion </h2>
         <h3> Varianza: ${varianza} </h3>
         <h3> Variacion estandar ${variacionEstandar}</h3>
-        <h3> Coeficiente de variacion ${coeficienteDeVariacion.toFixed(2)}</h3>
+        <h3> Coeficiente de variacion ${coeficienteDeVariacion}%</h3>
       </div>
     </div>
+  </table>
     `;
 
     tabla.innerHTML = html;
@@ -308,6 +309,125 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     // console.log(limites, frecuencias, frecuenciasAcumuludas, frecuenciasRelativas, frecuenciasRelativasAcumuludas, marcaDeClase, frecuenciaPorMarcaDeClase, media, mediana, moda);
 }
 
+const calcularMediaMenor30 = (n, arregloNumeros) => {
+  let suma = 0, media;
+
+  arregloNumeros.forEach((item, i) => {
+    suma += item;
+  });
+
+  media = suma / n;
+
+  return media;
+}
+
+const calcularMedianaMenor30 = (n, arregloNumeros) => {
+  let indice = 0, mediana = 0;
+
+  indice = (n + 1) / 2;
+
+  if(indice % 2 === 0)
+    mediana = arregloNumeros[indice - 1]
+
+  if(indice % 2 != 0){
+    let temp = Math.trunc(indice);
+    console.log(temp, typeof(temp));
+    mediana = (arregloNumeros[temp - 1] + arregloNumeros[temp]) / 2;
+    console.log(mediana);
+  }
+
+  return mediana;
+}
+
+const calcularModaMenor30 = (arregloNumeros) => {
+  const numerosUnicos = [...new Set(arregloNumeros)]; // Array sin duplicados
+
+  let duplicados = [...arregloNumeros]; // Creamos una copia del array original
+  numerosUnicos.forEach((numero) => {
+    const indice = duplicados.indexOf(numero);
+    duplicados = duplicados.slice(0, indice)
+    .concat(duplicados.slice(indice + 1, duplicados.length));
+  });
+
+  return duplicados;
+}
+
+const calcularVarianzaMenor30 = (n, arregloNumeros, media) => {
+  let suma = 0;
+
+  arregloNumeros.forEach((item, i) => {
+    suma += Math.pow((item - media), 2 );
+  });
+
+  return suma / (n - 1);
+
+}
+
+const calcularDesviacionEstandarMenor30 = (varianza) => {
+  return Math.sqrt(varianza);
+}
+
+const calcularCoeficienteDeVariacionMenor30 = (desviacionEstandar, media) => {
+  return ( desviacionEstandar / media ) * 100;
+}
+
+const calculosTablaFrecuenciasMenores30 = (n, arregloNumeros) => {
+
+    const numerosOrdenados = arregloNumeros.sort(function(a, b){return a - b});
+    const media = calcularMediaMenor30(n ,numerosOrdenados);
+    const mediana = calcularMedianaMenor30(n, numerosOrdenados);
+    const moda = calcularModaMenor30(numerosOrdenados);
+    const varianza = calcularVarianzaMenor30(n, numerosOrdenados, media);
+    const desviacionEstandar = calcularDesviacionEstandarMenor30(varianza);
+    const coeficienteDeVariacion = calcularCoeficienteDeVariacionMenor30(desviacionEstandar, media);
+    let html = "";
+
+    html += "</table>";
+
+    html += `
+    <div class="contenedor">
+      <div class="MTC">
+        <h2> Medidas de tendencia central </h2>
+        <h3> Media: ${media} </h3>
+        <h3> Mediana: ${mediana} </h3>
+    `;
+
+  if(!moda.length)
+    html += "<h3> Es amodal </h3<";
+
+  if(moda.length > 0){
+    moda.forEach((item, i) => {
+      html += `<h3>Moda ${i + 1}: ${item} </h3>`;
+    });
+  }
+    html += `
+      </div>
+      <div class="MD">
+        <h2> Medidas de dispersion </h2>
+        <h3> Varianza: ${varianza} </h3>
+        <h3> Variacion estandar ${desviacionEstandar}</h3>
+        <h3> Coeficiente de variacion ${coeficienteDeVariacion}%</h3>
+      </div>
+    </div>
+  </table>
+    `;
+  tabla.innerHTML = html;
+
+  html = "";
+  html += "<h2> Numeros ordenados </h2>";
+  html += "<table border=1>"
+  html += "<tr>"
+  numerosOrdenados.forEach((item, i) => {
+    if(i % 10 != 0)
+      html += `<th> ${item} </th>`;
+    if(i % 10 === 0)
+      html += `</th> <tr> <th> ${item} </th>`;
+  });
+  html += "</table>"
+  numeros.innerHTML = html;
+
+}
+
 btnCalcular.addEventListener("click", () => {
   const valoresIniciales = valores.value;
   const estado = valoresIniciales.match(/[-/+]?\d+(?:\.\d+)?/g);
@@ -316,15 +436,16 @@ btnCalcular.addEventListener("click", () => {
   if(estado.length != null){
     if(arregloNumeros.length >= 30){
       const {maximo, minimo, intervalo, amplitud} = distribucionFrecuencias(arregloNumeros);
-      // console.log("Maximo " + maximo, "Minimo " + minimo, "Intervalo " + intervalo, "Amplitud " + amplitud);
       calculosTablaFrecuencias(arregloNumeros.length, intervalo, amplitud, maximo, minimo, arregloNumeros);
     }
-  if(estado.length < 30){
+    if(estado.length < 30)
+      calculosTablaFrecuenciasMenores30(arregloNumeros.length, arregloNumeros);
+  }
+  if(estado.length === null){
     tabla.innerHTML = "";
     numeros.innerHTML = "";
     valores.value = null;
-    alert("Favor de cumplir con los requerimientos");
-    }
+    alert("Favor de ingresar numeros");
   }
 });
 
