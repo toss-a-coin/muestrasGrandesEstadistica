@@ -154,11 +154,21 @@ const calcularMedia = (frecuenciaPorMarcaDeClase, n) => {
 const calcularMediana = (n, limites, frecuencias, frecuenciasAcumuludas, amplitud) => {
   let CMe = n/2;
   let indice = 0;
+  let mediana;
 
   while(frecuenciasAcumuludas[indice] < CMe)
     indice++;
 
-  let mediana = limites[indice].limiteInferior + amplitud * ((CMe - frecuenciasAcumuludas[indice - 1]) / frecuencias[indice]);
+  if(!indice)
+    mediana = limites[indice].limiteInferior + amplitud * ((CMe - frecuenciasAcumuludas[indice]) / frecuencias[indice]);
+  else
+    mediana = limites[indice].limiteInferior + amplitud * ((CMe - frecuenciasAcumuludas[indice - 1]) / frecuencias[indice]);
+  // console.log(indice);
+  // console.log(limites[indice].limiteInferior);
+  // console.log(amplitud);
+  // console.log(CMe);
+  // console.log(frecuenciasAcumuludas[indice - 1]);
+  // console.log(frecuencias[indice]);
   return mediana;
 }
 
@@ -429,6 +439,8 @@ btnCalcular.addEventListener("click", () => {
   const valoresIniciales = valores.value;
   const estado = valoresIniciales.match(/[-/+]?\d+(?:\.\d+)?/g);
   const arregloNumeros = estado.map(i=>Number(i))
+
+  console.log(arregloNumeros);
 
   if(estado.length != null){
     if(arregloNumeros.length >= 30){
