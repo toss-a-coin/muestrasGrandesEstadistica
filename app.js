@@ -306,7 +306,7 @@ const calculosTablaFrecuencias = (n, intervalo, amplitud, maximo, minimo, arregl
     html += "</table>"
     numeros.innerHTML = html;
 
-    // console.log(limites, frecuencias, frecuenciasAcumuludas, frecuenciasRelativas, frecuenciasRelativasAcumuludas, marcaDeClase, frecuenciaPorMarcaDeClase, media, mediana, moda);
+    console.log(limites, frecuencias, frecuenciasAcumuludas, frecuenciasRelativas, frecuenciasRelativasAcumuludas, marcaDeClase, frecuenciaPorMarcaDeClase, media, mediana, moda);
 }
 
 const calcularMediaMenor30 = (n, arregloNumeros) => {
